@@ -1,5 +1,11 @@
 flask
+flask-cors
 flask-limiter
+apispec
+apispec[marshmallow]
+flask-apispec
+apispec-webframeworks
 waitress
 requests
 google-genai
+marshmallow

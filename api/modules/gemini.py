@@ -1,9 +1,11 @@
 import os
 import logging
+from typing import Any, Generator
 
 from google import genai
 
-MODEL = "gemini-2.0-flash"
+DEFAULT_MODEL = "gemini-2.0-flash"
+MODELS = ("gemini-2.0-flash", "gemini-2.0-flash-lite", "gemini-1.5-pro")
 
 lg = logging.getLogger("modules.gemini")
 
@@ -14,3 +16,13 @@ if not api_key:
   raise Exception("GEMINI_API_KEY is not set")
 
 client = genai.Client(api_key=api_key)
+
+
+def query_model(query: str, model: str = DEFAULT_MODEL) -> Generator[str | None, Any, Any]:
+  if model not in MODELS:
+    lg.error(f"Model {model} not found")
+    raise Exception(f"Model {model} not found")
+
+  lg.info(f"Querying model {model} with query {query}")
+  for chunk in client.models.generate_content_stream(model=model, contents=query):
+    yield chunk.text
