@@ -16,7 +16,6 @@ export function queryGemini(query: string, model: string): Promise<Response> {
 
 export async function getAvailableModels(): Promise<string[]> {
   const response = await fetch(apiUrl + '/gemini/models');
-  console.log(response);
   const data = await response.json();
   return data.models;
 }

@@ -3,7 +3,7 @@
     <h1 class="text-2xl font-semibold text-gray-800 mb-4">Ask the Gemini</h1>
     <div class="space-y-5">
       <ChooseModel v-model="model" />
-      <InputTextarea v-model="query" class="mt-4"
+      <InputTextarea @keyup.enter.prevent="onEnter" v-model="query" class="mt-4"
         placeholder="Enter your query and hit enter or press the submit button..." />
       <BaseButton @click="onSubmit">Submit</BaseButton>
       <AiResponse v-if="result" :value="result" />
@@ -25,6 +25,12 @@ const query = ref('');
 const result = ref('');
 const model = ref('');
 
+function onEnter(e: KeyboardEvent) {
+  const target = e.target as HTMLInputElement;
+  target.blur();
+  onSubmit();
+}
+
 async function onSubmit() {
   result.value = '';
 
@@ -40,7 +46,8 @@ async function onSubmit() {
       const { done, value } = await reader.read();
       if (done) break;
 
-      result.value += decoder.decode(value, { stream: true });
+      const chunk = decoder.decode(value, { stream: true });
+      result.value += chunk;
     }
   } catch (error) {
     console.error('Error fetching streamed data:', error);

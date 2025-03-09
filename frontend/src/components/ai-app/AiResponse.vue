@@ -1,15 +1,25 @@
 <template>
   <h3 class="text-xl font-bold">Answer</h3>
-  <div class="mt-4 p-4 bg-gray-50 border rounded-lg text-gray-700">
-    {{ props.value }}
+  <div class="p-4 bg-gray-50 border rounded-lg text-gray-700">
+    <div v-html="renderedMd"></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps, computed} from 'vue';
+
+import markdownit from 'markdown-it';
 
 const props = defineProps<{
   value: string;
 }>();
-console.log(props.value);
+
+const renderer = markdownit({
+  typographer: true
+});
+
+const renderedMd = computed<string>(() => {
+  return renderer.render(props.value);
+});
+
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <select v-model="model">
+    <select v-if="models" v-model="model">
       <option v-for="m in models" :key="m">{{ m }}</option>
     </select>
   </div>
