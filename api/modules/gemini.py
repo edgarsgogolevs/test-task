@@ -15,7 +15,10 @@ if not api_key:
   lg.error("GEMINI_API_KEY is not set")
   raise Exception("GEMINI_API_KEY is not set")
 
-client = genai.Client(api_key=api_key)
+try:
+  client = genai.Client(api_key=api_key)
+except Exception:
+  lg.error("Failed to initialize Gemini client", exc_info=True)
 
 
 def query_model(query: str, model: str = DEFAULT_MODEL) -> Generator[str | None, Any, Any]:
