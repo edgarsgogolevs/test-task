@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed} from 'vue';
+import { computed } from 'vue';
 
 import markdownit from 'markdown-it';
 
@@ -15,7 +15,8 @@ const props = defineProps<{
 }>();
 
 const renderer = markdownit({
-  typographer: true
+  typographer: true,
+  breaks: true
 });
 
 const renderedMd = computed<string>(() => {

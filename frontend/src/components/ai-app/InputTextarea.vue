@@ -8,8 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineModel } from 'vue';
-
 const model = defineModel<string>();
 
 const props = defineProps<{
