@@ -53,7 +53,7 @@ async function onSubmit() {
     }
   } catch (error) {
     console.error('Error fetching streamed data:', error);
-    showError(error as Error);
+    showError("Failed to get the answer :(");
   }
 }
 </script>
