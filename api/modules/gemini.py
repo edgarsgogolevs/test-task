@@ -19,6 +19,9 @@ client = genai.Client(api_key=api_key)
 
 
 def query_model(query: str, model: str = DEFAULT_MODEL) -> Generator[str | None, Any, Any]:
+  """
+    Query the Gemini model and yield the output as a stream of text/plain.
+  """
   if model not in MODELS:
     lg.error(f"Model {model} not found")
     raise Exception(f"Model {model} not found")

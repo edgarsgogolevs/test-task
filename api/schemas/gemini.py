@@ -3,7 +3,7 @@ from marshmallow import Schema, fields, EXCLUDE, validate
 from modules.gemini import MODELS
 
 
-class GeminiRequestSchema(Schema):
+class GeminiQueryRequestSchema(Schema):
 
   class Meta:
     unknown = EXCLUDE

@@ -12,7 +12,13 @@ from flask import Flask
 app = Flask(__name__)
 
 from flask_cors import CORS
+
 CORS(app)
+
+# Register blueprints
+from api.gemini import bp as gemini_bp
+
+app.register_blueprint(gemini_bp)
 
 # Setup rate limiting
 from flask_limiter import Limiter
@@ -26,10 +32,38 @@ limiter = Limiter(
   storage_uri="memory://",  # Memory storage used for simplicity, in real life use Redis or smth like that
 )
 
+from flask_apispec.extension import FlaskApiSpec  # type: ignore
+from apispec.ext.marshmallow import MarshmallowPlugin
+from apispec_webframeworks.flask import FlaskPlugin
+from apispec import APISpec
+
+app.config.update({
+  "APISPEC_SPEC":
+    APISpec(
+      title="Numbero Test API",
+      version="v1",
+      openapi_version="2.0",
+      plugins=[MarshmallowPlugin()],
+    ),
+  "APISPEC_SWAGGER_URL":
+    "/swagger/",
+  "APISPEC_SWAGGER_UI_URL":
+    "/swagger-ui/",
+})
+
+docs = FlaskApiSpec(app)
+docs.register_existing_resources()
+
 
 @app.route("/")
 def index_route():
   return "Hello from API!"
+
+
+@app.errorhandler(404)
+def pageNotFound(error):
+  lg.warning(f"404 {error}")
+  return {"error": "Not found"}, 404
 
 
 @app.errorhandler(500)
@@ -37,10 +71,6 @@ def server_error(_):
   lg.critical(traceback.format_exc())
   return {'error': 'Internal server error'}, 500
 
-
-from api.gemini import bp as gemini_bp
-
-app.register_blueprint(gemini_bp)
 
 # run developement server
 if __name__ == '__main__':
