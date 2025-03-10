@@ -24,4 +24,4 @@ def get_models():
   resp = {
     "models": gemini.MODELS
   }
-  return jsonify(resp), 200
+  return jsonify(resp)
