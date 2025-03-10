@@ -14,7 +14,7 @@ This document contains a brief description of the solution and instructions how 
 ```bash
 docker-compose up --build
 ```
-> [!IMPORANT]
+> [!IMPORTANT]
 > Make sure to somehow provide `GEMINI_API_KEY` environment variable.
 
 Either run
@@ -33,6 +33,8 @@ API_KEY=<your_api_key> docker-compose up --build
 ```
 
 By default API runs on port `6969` and frontend on `8080`.
+
+To access frontend go to [http://localhost:8080](http://localhost:8080)
 
 ## API
 
