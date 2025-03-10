@@ -2,6 +2,7 @@ from flask import Blueprint, Response, jsonify
 from flask_apispec import use_kwargs, marshal_with
 
 from modules import gemini
+from modules.limiter import limiter
 
 from schemas.gemini import GeminiQueryRequestSchema, GeminiGetModelsSchema
 
@@ -18,6 +19,7 @@ def query_gemini(**kwargs):
 
 @bp.route("/models", methods=["GET"])
 @marshal_with(GeminiGetModelsSchema, code="200")
+@limiter.exempt
 def get_models():
   resp = {
     "models": gemini.MODELS

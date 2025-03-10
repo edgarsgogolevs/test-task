@@ -30,6 +30,7 @@ init_swagger(app)
 
 
 @app.route("/")
+@limiter.exempt
 def index_route():
   return "Hello from API!"
 
