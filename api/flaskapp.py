@@ -11,6 +11,10 @@ from flask import Flask
 
 app = Flask(__name__)
 
+from modules.limiter import limiter
+
+limiter.init_app(app)
+
 from flask_cors import CORS
 
 CORS(app)
@@ -20,39 +24,9 @@ from api.gemini import bp as gemini_bp
 
 app.register_blueprint(gemini_bp)
 
-# Setup rate limiting
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from modules.swagger import init_swagger
 
-# Limit by IP is used, realistically limit per user would be better.
-limiter = Limiter(
-  get_remote_address,
-  app=app,
-  default_limits=["200 per day", "50 per hour"],
-  storage_uri="memory://",  # Memory storage used for simplicity, in real life use Redis or smth like that
-)
-
-from flask_apispec.extension import FlaskApiSpec  # type: ignore
-from apispec.ext.marshmallow import MarshmallowPlugin
-from apispec_webframeworks.flask import FlaskPlugin
-from apispec import APISpec
-
-app.config.update({
-  "APISPEC_SPEC":
-    APISpec(
-      title="Numbero Test API",
-      version="v1",
-      openapi_version="2.0",
-      plugins=[MarshmallowPlugin()],
-    ),
-  "APISPEC_SWAGGER_URL":
-    "/swagger/",
-  "APISPEC_SWAGGER_UI_URL":
-    "/swagger-ui/",
-})
-
-docs = FlaskApiSpec(app)
-docs.register_existing_resources()
+init_swagger(app)
 
 
 @app.route("/")
@@ -74,5 +48,4 @@ def server_error(_):
 
 # run developement server
 if __name__ == '__main__':
-  # run debug app
   app.run(debug=True, port=int(os.getenv("PORT", 8080)))
