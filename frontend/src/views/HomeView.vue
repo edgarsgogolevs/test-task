@@ -12,14 +12,16 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+
+import { queryGemini } from '@/lib/gemini';
+import { showError } from '@/lib/notify';
+
 import InputTextarea from '@/components/ai-app/InputTextarea.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import AiResponse from '@/components/ai-app/AiResponse.vue';
 import ChooseModel from '@/components/ai-app/ChooseModel.vue';
 
-import { queryGemini } from '@/lib/gemini';
-
-import { ref } from 'vue';
 
 const query = ref('');
 const result = ref('');
@@ -51,6 +53,7 @@ async function onSubmit() {
     }
   } catch (error) {
     console.error('Error fetching streamed data:', error);
+    showError(error as Error);
   }
 }
 </script>
