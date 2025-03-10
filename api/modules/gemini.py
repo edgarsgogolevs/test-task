@@ -26,6 +26,6 @@ def query_model(query: str, model: str = DEFAULT_MODEL) -> Generator[str | None,
     lg.error(f"Model {model} not found")
     raise Exception(f"Model {model} not found")
 
-  lg.info(f"Querying model {model} with query {query}")
+  lg.info(f"Querying model {model} with query '{query}'")
   for chunk in client.models.generate_content_stream(model=model, contents=query):
     yield chunk.text
