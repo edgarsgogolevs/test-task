@@ -1,0 +1,17 @@
+services:
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+
+  api:
+    build: ./api
+    ports:
+      - "6969:6969"
+    environment:
+      - LOGLEVEL=INFO
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - PORT=6969
+    volumes:
+      - ./api/logs:/app/logs
