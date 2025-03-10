@@ -3,8 +3,8 @@
     <h1 class="text-2xl font-semibold text-gray-800 mb-4">Ask the Gemini</h1>
     <div class="space-y-5">
       <ChooseModel v-model="model" />
-      <InputTextarea @keyup.enter.prevent="onEnter" v-model="query" class="mt-4"
-        placeholder="Enter your query and hit enter or press the submit button..." />
+      <InputTextarea @input="badQuery = false" :invalid="badQuery" @keyup.enter.prevent="onEnter" v-model="query"
+        class="mt-4" placeholder="Enter your query and hit enter or press the submit button..." />
       <BaseButton @click="onSubmit">Submit</BaseButton>
       <AiResponse v-if="result" :value="result" />
     </div>
@@ -24,6 +24,7 @@ import ChooseModel from '@/components/ai-app/ChooseModel.vue';
 
 
 const query = ref('');
+const badQuery = ref(false);
 const result = ref('');
 const model = ref('');
 
@@ -34,6 +35,11 @@ function onEnter(e: KeyboardEvent) {
 }
 
 async function onSubmit() {
+  if (query.value.trim().length < 5) {
+    showError('Query too short');
+    badQuery.value = true;
+    return;
+  }
   result.value = '';
 
   try {

@@ -36,11 +36,16 @@ API_KEY=<your_api_key> docker-compose up --build
 By default API runs on port `6969` and frontend on `8080`.
 
 To access frontend go to [http://localhost:8080](http://localhost:8080)
+To view API docs go to [http://localhost:6969/swagger-ui](http://localhost:6969/swagger-ui)
 
 ## API
 
 Python [Flask](https://flask.palletsprojects.com/en/stable/) used to create a REST API for the application.
+
 For input validation and output marshalling [Marshmallow](https://marshmallow.readthedocs.io/en/3.x-line/) is used.
+Validation checks if `model` is one of the available models.
+And validates length of a `query` string: minimum `5`, maximum `5120`.
+
 Auto-generated apispec Swagger docs are available at `/swagger` and `/swagger-ui` ### API endpoints
 
 There are default handlers setup for `pageNotFound` and `serverError` errors.
