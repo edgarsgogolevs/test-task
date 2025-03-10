@@ -39,6 +39,13 @@ async function onSubmit() {
   try {
     const response = await queryGemini(query.value, model.value);
 
+    if (response.status === 429) {
+      showError('Slow down, rate limit exceeded');
+      throw new Error('Rate limit exceeded');
+    }
+    if (!response.ok) {
+      throw new Error('Failed to get the answer');
+    }
     if (!response.body) throw new Error('No response body');
 
     const reader = response.body.getReader();
