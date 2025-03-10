@@ -4,7 +4,8 @@ This document contains a brief description of the solution and instructions how 
 
 ## Table of contents
 
-- [Quickly start from Docker](#quickly-start-from-docker) [API](#api)
+- [Quickly start from Docker](#quickly-start-from-docker)
+- [API](#api)
   - [API endpoints](#api-endpoints)
   - [Starting in development mode (MacOS and Linux)](#starting-in-development-mode-macos-and-linux)
 - [Frontend](#frontend)
