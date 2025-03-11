@@ -5,7 +5,7 @@
       <ChooseModel v-model="model" />
       <InputTextarea @input="badQuery = false" :invalid="badQuery" @keyup.enter.prevent="onEnter" v-model="query"
         class="mt-4" placeholder="Enter your query and hit enter or press the submit button..." />
-      <BaseButton @click="onSubmit">Submit</BaseButton>
+      <BaseButton :disabled="loading" @click="onSubmit">Submit</BaseButton>
       <AiResponse v-if="result" :value="result" />
     </div>
   </div>
@@ -27,6 +27,7 @@ const query = ref('');
 const badQuery = ref(false);
 const result = ref('');
 const model = ref('');
+const loading = ref(false);
 
 function onEnter(e: KeyboardEvent) {
   const target = e.target as HTMLInputElement;
@@ -40,6 +41,7 @@ async function onSubmit() {
     badQuery.value = true;
     return;
   }
+  loading.value = true;
   result.value = '';
 
   try {
@@ -67,6 +69,8 @@ async function onSubmit() {
   } catch (error) {
     console.error('Error fetching streamed data:', error);
     showError("Failed to get the answer :(");
+  } finally {
+    loading.value = false;
   }
 }
 </script>
